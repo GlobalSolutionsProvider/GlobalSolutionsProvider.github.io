@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes" name="viewport">
+    <title>Educational Quiz About America</title>
+    <style>
+       body {
+      -webkit-user-select: none; /* Disable selection in WebKit/Blink */
+      -moz-user-select: none; /* Disable selection in Firefox */
+      -ms-user-select: none; /* Disable selection in IE 10 and IE 11 */
+      user-select: none; /* Disable selection in standard browsers */
+      -khtml-user-select: none; /* Disable selection in Konqueror */
+      -o-user-select: none; /* Disable selection in Opera */
+    }
+             
+       body, h1, p, button {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: #f1f1f1;
+        }
+
+        #quiz-container {
+            background-color: #fff;
+            max-width: 90%;
+            margin: -15px auto;
+            padding: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #question-container {
+            margin-bottom: 0px;
+          	margin-top: 0px;
+        }
+
+        p#question-text {
+            font-size: 18px;
+            color: #555;
+          	font-family: Tahoma, sans-serif;
+        }
+
+        #options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            font-size: 14px;
+            padding: 5px 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Background colors for option buttons */
+        button.option-a {
+            background-color: #228B22; /* Option A */
+            color: #fff;
+          	font-weight: bold;
+        }
+
+        button.option-b {
+            background-color: #000080; /* Option B */
+            color: #fff;
+          	font-weight: bold;
+        }
+
+        button.option-c {
+            background-color: #800080; /* Option C */
+            color: #fff;
+           font-weight: bold;
+        }
+
+        button.option-d {
+            background-color: #800020; /* Option D */
+            color: #fff;
+           font-weight: bold;
+        }
+
+        button:hover {
+            background-color: none;
+        }
+
+        #result-container {
+            background-color: #fff;
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: left;
+            display: none;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* Add this CSS rule to set the font size for the "Result" text */
+        #result-container h2 {
+            font-size: 25px;
+          	 margin-top: -10px;
+            font-family: Verdana, sans-serif; /* Adjust the font size as needed */
+            /* Add any other styles you want for this text here */
+        }
+
+        p#score-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+          	font-family: Arial, sans-serif;
+        }
+
+        p#remarks {
+            font-size: 19px;
+            font-weight: none;
+            margin-bottom: 20px;
+          	font-family: Arial, sans-serif;
+        }
+
+        /* Add this CSS rule to set the font size for the "Wrongly Answered Questions:" text */
+        p#wrong-answers-text {
+            font-size: 18px; /* Adjust the font size as needed */
+            
+        }
+
+        p#congratulations {
+            font-size: 22px;
+            font-weight: bold;
+            color:  #00A86B;
+          	margin-bottom: 20px;
+          	margin-top: 30px;
+        }
+
+        p#correct-answers-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        div#correct-answers-list {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        /* Bold question numbers */
+        .question-number {
+            font-weight: bold;
+        }
+
+        /* Bold question numbers for wrongly answered questions */
+        .wrong-question-number {
+            font-weight: bold;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+
+            #quiz-container {
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 18px;
+            }
+
+            #options-container button {
+                font-size: 14px;
+            }
+
+            #result-container {
+                max-width: 90%;
+            }
+        }
+
+
+        /* Add a new style for the "Submit" button */
+        button#submit-quiz-button {
+            background-color: #4CAF50;
+            color: #FFFFFF;
+            display: none;
+            margin: 40px auto;
+            font-weight: bold;
+            font-size: 20px;
+            font-family: Roboto, sans-serif;
+          	
+        }
+
+        /* Add this CSS rule to set the font size for the wrongly answered questions list */
+        .wrong-answers-list {
+            font-size: 17px; /* Adjust the font size as needed */
+            /* Add any other styles you want for the list here */
+        }
+
+        /* Add styles for feedback indicators */
+        .feedback-icon {
+            font-size: 37px;
+            margin-top: 3px;
+        }
+
+        #correct-feedback {
+            color: #00A86B; /* Green color for correct feedback */
+        }
+
+        #incorrect-feedback {
+            color: #e74c3c; /* Red color for incorrect feedback */
+        }
+
+        /* Add a style for the disabled answer buttons */
+        button[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+      
+      /* Add a style for the selected answer option */
+		button.selected-option {
+    background-color: #000000; /* Change to black */
+    color: #FFD700; /* Change text color to white */
+    font-weight: bold;      
+	}
+      
+     /* Center the "Try Again" button */
+#try-again-container {
+    text-align: center;
+    margin: 20px auto; /* Center horizontally and provide top margin */
+}
+
+/* Adjust the styling for the "Try Again" button */
+a.custom-button {
+    background-color: #FFA500; /* Match the color of your "Submit" button */
+    color: #1E2A4A;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underlines for links */
+    font-size: 18px; /* Adjust font size as needed */
+}
+
+/* Explicitly remove hover styles */
+a.custom-button:hover {
+    background-color: #FFA500; /* Maintain button color on hover */
+    color: #1E2A4A;
+    text-decoration: none; /* Remove underlines on hover */
+}
+      /* Style for the "Quick Revision" button container */
+#quick-revision-container {
+    text-align: center;
+    margin-top: 27px; /* Adjust the top margin as needed */
+}
+
+/* Style for the "Quick Revision" button */
+#quick-revision-container a.custom-button {
+    background-color: #2196F3; /* Button background color */
+    color: #FFFFFF; /* Text color */
+    padding: 5px 30px; /* Padding for the button */
+    border: none;
+    border-radius: 70px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underlines for links */
+    font-size: 18px; /* Font size */
+    font-weight: bold;
+}
+
+/* Hover style for the button */
+#quick-revision-container a.custom-button:hover {
+    background-color: none; /* Change color on hover */
+}
+      /* Centered message style */
+        #message-container {
+             background-color: #FFFFFF;
+            max-width: 90%;
+            margin: 30px auto;
+            padding: 5px 30px;;
+          	border-radius: 10px;
+            text-align: center;
+          	margin-top: 30px;
+          	margin-bottom: 20px;
+                  
+        }
+      #quiz-title {
+    text-decoration: underline;
+    margin-top: 2px; /* Adjust as needed to move the title upwards */
+}
+/* Set the width of the media controls panel to 100% and hide overflow */
+#audio-container::-webkit-media-controls-panel {
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+/* Hide the overflow button */
+#audio-container::-webkit-media-controls-overflow-button {
+    display: none !important;
+}
+
+        </style>
+  <!-- JavaScript code for playing background music -->
+    <script>
+        // Function to start playing background music
+        function playBackgroundMusic() {
+            const backgroundMusic = document.getElementById("background-music");
+            backgroundMusic.play();
+        }
+
+        // Call the function to play background music when the first question is loaded
+        window.addEventListener("load", playBackgroundMusic);
+    </script>
+  
+</head>
+<body>
+<!-- Add the muted attribute to mute the audio by default -->
+<audio controls autoplay loop id="background-music" muted>
+    <source src="https://globalsolutionsprovider.github.io/SouthernCaliforniaRiot.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<script>
+    // Function to start playing background music when user interacts
+    function startBackgroundMusic() {
+        const backgroundMusic = document.getElementById("background-music");
+        backgroundMusic.muted = false; // Unmute the audio
+        backgroundMusic.play();
+    }
+
+    // Call the function to start playing background music when the page loads
+    window.addEventListener("load", startBackgroundMusic);
+</script>
+
+  <script>
+    const backgroundMusic = document.getElementById("background-music");
+
+    // Play the background music when the page loads
+    window.addEventListener("load", function() {
+        backgroundMusic.play();
+    });
+</script>
+    <header>
+        <h1>Quiz 1:</h1>
+    </header>
+    <main>
+        <div id="try-again-container" style="display: none;">
+            <a class="custom-button" href="go:quiz1" style="text-align: center; font-weight: bold;">Try Again!</a>
+        </div>
+        <section id="quiz-container">
+        <h2 id="quiz-title"><strong>What Do You Know About America?</strong> <span style="font-weight: normal;">(Test Your Knowledge)</span></h2>
+       
+
+
+
+            <div id="question-container">
+                <p id="question-text">Question text will appear here.</p>
+            </div>
+            <div id="options-container">
+                <!-- Options will be generated dynamically using JavaScript -->
+            </div>
+            <!-- Feedback indicators for correct and incorrect answers -->
+            <div id="feedback">
+                <div id="correct-feedback" class="feedback-icon" style="display: none;">✅</div>
+                <div id="incorrect-feedback" class="feedback-icon" style="display: none;">❌</div>
+            </div>
+            <button aria-label="Next Question" id="submit-button" style="display: none;">Next</button>
+
+            <!-- Add a "Submit" button initially hidden -->
+            <button aria-label="Submit Quiz" id="submit-quiz-button">Submit</button>
+        </section>
+
+        <div id="quick-revision-container">
+            <a class="custom-button" href=" ">Facts About America</a>
+        </div>
+
+        <!-- Message container for thank you message -->
+   <div id="message-container" style="display: none; text-align: center; font-size: 30px; font-weight: bold;">
+    <span style="color: #2196F3; text-transform: none; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); transform: translateZ(10px) skewX(-10deg); display: inline-block; margin-bottom: 20px; font-family: 'Tahoma', sans-serif;">
+        <strong style="font-size: 25px;">Thank You for Completing the Quiz!</strong>
+    </span>
+    <br>
+    <span style="color:  #228B22; text-transform: none; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); transform: translateZ(10px) skewX(-10deg); display: inline-block; font-family: 'Tahoma', sans-serif;">
+        <strong style="font-size: 25px;">Your Result Is on Its Way.</strong>
+    </span>
+</div>
+       <section aria-live="polite" id="result-container" style="display: none;">
+            <h2>Result</h2>
+            <p id="score-text"></p>
+            <p id="remarks"></p>
+            <p id="congratulations"></p>
+            <p id="correct-answers-text"></p>
+            <div id="correct-answers-list"></div>
+        </section>
+    </main>
+    <footer>
+        <script>
+const questions = [
+  {
+    number: 1,
+    question: "What are the various names for the United States of America?",
+    options: [
+      { text: "the States, the United States, the U.S., the USA, America", isCorrect: true },
+      { text: "the States, the United States, the U.K., the USA, America", isCorrect: false },
+      { text: "the States, the United Kingdom, the U.S., the USA, America", isCorrect: false },
+      { text: "the States, the United States, the U.S., the UK, America", isCorrect: false }
+    ]
+  },
+  {
+    number: 2,
+    question: "The United States was the first country to gain independence from a European power in...",
+    options: [
+      { text: "1783", isCorrect: true },
+      { text: "1776", isCorrect: false },
+      { text: "1791", isCorrect: false },
+      { text: "1800", isCorrect: false }
+    ]
+  },
+  {
+    number: 3,
+    question: "The Global Positioning System (GPS) is operated and maintained by...",
+    options: [
+      { text: "the U.S. Air Force", isCorrect: true },
+      { text: "the Navy", isCorrect: false },
+      { text: "NASA", isCorrect: false },
+      { text: "the CIA", isCorrect: false }
+    ]
+  },
+  {
+    number: 4,
+    question: "The first constitution of the United States was adopted in...",
+    options: [
+      { text: "1788", isCorrect: true },
+      { text: "1776", isCorrect: false },
+      { text: "1791", isCorrect: false },
+      { text: "1800", isCorrect: false }
+    ]
+  },
+  {
+    number: 5,
+    question: "The current design of the U.S. flag was created by...",
+    options: [
+      { text: "a high school student named Robert G. Heft", isCorrect: true },
+      { text: "a professional designer", isCorrect: false },
+      { text: "the Founding Fathers", isCorrect: false },
+      { text: "the President", isCorrect: false }
+    ]
+  },
+  {
+    number: 6,
+    question: "The American National flag has how many stripes?",
+    options: [
+      { text: "13", isCorrect: true },
+      { text: "50", isCorrect: false },
+      { text: "20", isCorrect: false },
+      { text: "10", isCorrect: false }
+    ]
+  },
+  {
+    number: 7,
+    question: '"The Star-Spangled Banner" is the national anthem of...',
+    options: [
+      { text: "the U.S.", isCorrect: true },
+      { text: "the U.K.", isCorrect: false },
+      { text: "Canada", isCorrect: false },
+      { text: "Australia", isCorrect: false }
+    ]
+  },
+  {
+    number: 8,
+    question: "The U.S. has the world’s largest economy when measured by...",
+    options: [
+      { text: "nominal GDP", isCorrect: true },
+      { text: "purchasing power parity", isCorrect: false },
+      { text: "GDP per capita", isCorrect: false },
+      { text: "gross national income", isCorrect: false }
+    ]
+  },
+  {
+    number: 9,
+    question: "The American Revolution began in...",
+    options: [
+      { text: "Rhode Island", isCorrect: true },
+      { text: "Massachusetts", isCorrect: false },
+      { text: "Virginia", isCorrect: false },
+      { text: "New York", isCorrect: false }
+    ]
+  },
+  {
+    number: 10,
+    question: "The United States holds the world’s largest reserves of...",
+    options: [
+      { text: "coal", isCorrect: true },
+      { text: "oil", isCorrect: false },
+      { text: "natural gas", isCorrect: false },
+      { text: "uranium", isCorrect: false }
+    ]
+  }
+];
+          		 // Fisher-Yates (Knuth) Shuffle Function
+ 			   function shuffleArray(array) {
+      		  for (let i = array.length - 1; i > 0; i--) {
+           	 const j = Math.floor(Math.random() * (i + 1));
+          	  [array[i], array[j]] = [array[j], array[i]];
+        	}
+   		 }
+
+  				  // Shuffle the questions array
+  				  shuffleArray(questions);
+
+   				 // Assign question numbers (sequential from 1)
+   				 questions.forEach((question, index) => {
+       			 question.number = index + 1;
+   			 });
+
+
+
+            let currentQuestion = 0;
+            let score = 0;
+            const wrongAnswers = [];
+
+            const questionText = document.getElementById("question-text");
+            const optionsContainer = document.getElementById("options-container");
+            const submitButton = document.getElementById("submit-button");
+            const submitQuizButton = document.getElementById("submit-quiz-button");
+            const resultContainer = document.getElementById("result-container");
+            const scoreText = document.getElementById("score-text");
+            const remarksText = document.getElementById("remarks");
+            const congratulationsText = document.getElementById("congratulations");
+            const correctAnswersText = document.getElementById("correct-answers-text");
+            const correctAnswersList = document.getElementById("correct-answers-list");
+            const correctFeedback = document.getElementById("correct-feedback");
+            const incorrectFeedback = document.getElementById("incorrect-feedback");
+
+            // Message container for thank you message
+            const messageContainer = document.getElementById("message-container");
+
+            // Add a variable to keep track of whether a question has been answered
+            let questionAnswered = false;
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            function loadQuestion() {
+                const current = questions[currentQuestion];
+                questionText.innerHTML = `<span class='question-number'>${current.number}.</span> ${current.question}`;
+
+                const shuffledOptions = [...current.options];
+                shuffleArray(shuffledOptions);
+
+                optionsContainer.innerHTML = "";
+                shuffledOptions.forEach((option, index) => {
+                    const button = document.createElement("button");
+                    button.innerHTML = option.text;
+                    button.addEventListener("click", () => selectOption(index, option.isCorrect));
+
+                    switch (index) {
+                        case 0:
+                            button.classList.add("option-a");
+                            break;
+                        case 1:
+                            button.classList.add("option-b");
+                            break;
+                        case 2:
+                            button.classList.add("option-c");
+                            break;
+                        case 3:
+                            button.classList.add("option-d");
+                            break;
+                        default:
+                            break;
+                    }
+
+                    button.style.fontSize = "18px";
+
+                    optionsContainer.appendChild(button);
+                });
+            }
+
+              // Define audio elements for correct and wrong feedback
+    const correctSound = new Audio("https://globalsolutionsprovider.github.io/Correct-Feedback-Sound.mp3");
+    const wrongSound = new Audio("https://globalsolutionsprovider.github.io/Wrong-Feedback-Sound.mp3");
+
+    function playCorrectSound() {
+        correctSound.play();
+    }
+
+    function playWrongSound() {
+        wrongSound.play();
+    }
+
+    // Function to handle selecting an option
+    function selectOption(selectedIndex, isCorrect) {
+        // Check if the question has already been answered
+        if (questionAnswered) {
+            return; // Do nothing if the question has already been answered
+        }
+
+        // Set the question as answered to prevent further selections
+        questionAnswered = true;
+
+        const current = questions[currentQuestion];
+        if (isCorrect) {
+            score++;
+            correctFeedback.style.display = 'block'; // Show correct feedback
+            playCorrectSound(); // Play correct feedback sound
+            setTimeout(() => {
+                correctFeedback.style.display = 'none'; // Hide correct feedback
+                loadNextQuestion();
+            }, 2000); // Wait for 2 seconds
+        } else {
+            wrongAnswers.push(current);
+            incorrectFeedback.style.display = 'block'; // Show incorrect feedback
+            playWrongSound(); // Play wrong feedback sound
+            setTimeout(() => {
+                incorrectFeedback.style.display = 'none'; // Hide incorrect feedback
+                loadNextQuestion();
+            }, 2000); // Wait for 2 seconds
+        }
+
+        // Disable all answer buttons to prevent further selections
+        const optionButtons = document.querySelectorAll('#options-container button');
+        optionButtons.forEach(button => {
+            button.disabled = true;
+        });
+
+        // Add the selected-option class to the clicked button
+        optionButtons[selectedIndex].classList.add('selected-option');
+    }
+           function loadNextQuestion() {
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        // Reset options and enable them
+        const optionButtons = document.querySelectorAll('#options-container button');
+        optionButtons.forEach(button => {
+            button.disabled = false;
+        });
+
+        questionAnswered = false; // Reset the questionAnswered flag
+        loadQuestion();
+    } else {
+        // Hide the "Quick Revision" button when the last question is answered
+        document.getElementById("quick-revision-container").style.display = "none";
+
+        // Display the quiz result
+        document.getElementById("question-container").style.display = "none";
+        document.getElementById("options-container").style.display = "none";
+
+        // Hide the message container
+        messageContainer.style.display = 'none';
+
+        submitQuizButton.style.display = 'block';
+        submitQuizButton.style.margin = '0 auto';
+        submitQuizButton.style.fontWeight = 'bold';
+    }
+}
+
+
+            submitQuizButton.addEventListener('click', () => {
+                // Show the message container
+                messageContainer.style.display = 'block';
+              
+              	// Hide the "Submit" button
+  			  submitQuizButton.style.display = 'none';
+
+                // After 3 seconds, hide the message and show the result container
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                    showResult();
+                }, 10000);
+            });
+
+            function showResult() {
+                const quizContainer = document.getElementById("quiz-container");
+                quizContainer.style.display = "none";
+
+                resultContainer.innerHTML = "";
+
+                resultContainer.style.display = "block";
+
+                const resultText = document.createElement("h2");
+                resultText.textContent = "Result";
+                resultContainer.appendChild(resultText);
+
+                // Check for a perfect score and set the message
+                if (score === questions.length) {
+                    congratulationsText.textContent = "Congratulations!!! Keep It Up! 🤗 🙌 👍 🤝";
+                    resultContainer.appendChild(congratulationsText);
+                }
+              
+              	// Show the "Quick Revision" button
+    const quickRevisionContainer = document.getElementById("quick-revision-container");
+    quickRevisionContainer.style.display = "block";
+
+                  const grading = {
+    0: "<span style='color: blue; font-weight: bold;'>No knowledge😔</span>",
+    1: "<span style='color: blue; font-weight: bold;'>Very limited knowledge. 😕</span>",
+    2: "<span style='color: blue; font-weight: bold;'>Limited Knowledge. 🙁</span>",
+    3: "<span style='color: blue; font-weight: bold;'>Some knowledge but with significant errors. 😟</span>",
+    4: "<span style='color: blue; font-weight: bold;'>Fair knowledge but with notable errors. 😐</span>",
+    5: "<span style='color: blue; font-weight: bold;'>Average knowledge. 🙂</span>",
+    6: "<span style='color: blue; font-weight: bold;'>Good knowledge with minor errors. 😄</span>",
+    7: "<span style='color: blue; font-weight: bold;'>Very good knowledge with few errors. 😁</span>",
+    8: "<span style='color: blue; font-weight: bold;'>Excellent knowledge with minimal errors. 😁 👏 👏</span>",
+    9: "<span style='color: blue; font-weight: bold;'>Outstanding knowledge with negligible errors. 😁 👏 👏 👏  🕺 💃</span>",
+    10: "<span style='color: blue; font-weight: bold;'>Perfect knowledge. Well Done! 👌 😁 👏 👏 👏 👏 🕺 💃</span>"
+};
+                // Display the score
+                scoreText.innerHTML = `Score: ${score}/${questions.length}`;
+                scoreText.style.fontWeight = "bold";
+                scoreText.style.color = "#e74c3c";
+                resultContainer.appendChild(scoreText);
+
+                const remarksText = document.createElement("p");
+                remarksText.id = "remarks";
+                remarksText.innerHTML = `Remarks: ${grading[score] || "Invalid Score"}`;
+                remarksText.style.fontSize = "19px";
+                remarksText.style.color = "#333";
+                resultContainer.appendChild(remarksText);
+
+                if (wrongAnswers.length > 0) {
+                    const wrongAnswersText = document.createElement("p");
+                    if (wrongAnswers.length === 1) {
+                        wrongAnswersText.textContent = "Wrongly Answered Question:";
+                    } else {
+                        wrongAnswersText.textContent = "Wrongly Answered Questions:";
+                    }
+                    wrongAnswersText.style.fontWeight = "bold";
+                    wrongAnswersText.style.fontSize = "16px";
+                    wrongAnswersText.style.marginBottom = "7px";
+                    resultContainer.appendChild(wrongAnswersText);
+
+                    const wrongAnswersList = document.createElement("div");
+                    wrongAnswersList.classList.add("wrong-answers-list");
+
+                    wrongAnswers.forEach((question, index) => {
+                        const originalQuestionNumber = question.number;
+                        const questionText = question.question;
+                        const generatedQuestionNumber = index + 1;
+                        const answerItem = document.createElement("p");
+                        answerItem.style.marginBottom = "15px";
+                        answerItem.innerHTML = `<span class='wrong-question-number'>${originalQuestionNumber}.</span> ${questionText}`;
+
+                        wrongAnswersList.appendChild(answerItem);
+                    });
+
+                    resultContainer.appendChild(wrongAnswersList);
+
+                    // Show the "Try Again" button if there are wrong answers
+                    const tryAgainContainer = document.getElementById("try-again-container");
+                    tryAgainContainer.style.display = "block";
+                }
+            }
+
+            loadQuestion();
+          </script>
+     
+       
+    </footer>
+  
+ 
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+        
+          
+            
+      
+  
+
+       
