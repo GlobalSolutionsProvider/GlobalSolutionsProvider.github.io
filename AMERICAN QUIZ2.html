@@ -303,20 +303,44 @@ a.custom-button:hover {
     text-decoration: underline;
     margin-top: 2px; /* Adjust as needed to move the title upwards */
 }
+#audio-container {
+    text-align: center; /* Center the content horizontally */
+    margin-bottom: -10px; /* Add some bottom margin to separate it from the quiz */
+}
+
+#audio-container audio {
+    display: inline-block; /* Ensure the audio controls stay in-line */
+}
 
         </style>
+  <script>
+   // Function to customize media controls
+function customizeMediaControls() {
+    // Get the audio element
+    const audio = document.getElementById("background-music");
+    
+    // Modify the controlsList attribute to disable download and playbackRate controls
+    audio.controlsList = "nodownload nodirection noduration nodisplay-capture";
+}
+
+// Call the function to customize media controls when the document is loaded
+document.addEventListener("DOMContentLoaded", customizeMediaControls);
+</script>
+
 </head>
 <body>
-  <!-- Background Music -->
-    <audio id="background-music" src="https://globalsolutionsprovider.github.io/SouthernCaliforniaRiot.mp3" autoplay loop></audio>
-
-
+<div id="audio-container">
+        <audio controls loop id="background-music">
+            <source src="https://globalsolutionsprovider.github.io/SouthernCaliforniaRiot.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
   <script>
-    const backgroundMusic = document.getElementById("background-audio");
+    const backgroundMusic = document.getElementById("background-music");
 
     // Play the background music when the page loads
     window.addEventListener("load", function() {
-        backgroundMusic.play();
+        // backgroundMusic.play();
     });
 </script>
     <header>
@@ -326,7 +350,8 @@ a.custom-button:hover {
         <div id="try-again-container" style="display: none;">
             <a class="custom-button" href="go:quiz1" style="text-align: center; font-weight: bold;">Try Again!</a>
         </div>
-        <section id="quiz-container">
+       <section id="quiz-container">
+    
         <h2 id="quiz-title"><strong>What Do You Know About America?</strong> <span style="font-weight: normal;">(Test Your Knowledge)</span></h2>
        
 
@@ -561,8 +586,8 @@ const questions = [
             }
 
               // Define audio elements for correct and wrong feedback
-    const correctSound = new Audio("https://globalsolutionsprovider.github.io/Correct-Feedback-Sound.wav");
-    const wrongSound = new Audio("https://globalsolutionsprovider.github.io/Wrong-Feedback-Sound.wav");
+    const correctSound = new Audio("https://globalsolutionsprovider.github.io/Correct-Feedback-Sound.mp3");
+    const wrongSound = new Audio("https://globalsolutionsprovider.github.io/Wrong-Feedback-Sound.mp3");
 
     function playCorrectSound() {
         correctSound.play();
@@ -610,7 +635,13 @@ const questions = [
         // Add the selected-option class to the clicked button
         optionButtons[selectedIndex].classList.add('selected-option');
     }
-           function loadNextQuestion() {
+         function loadNextQuestion() {
+    // Check if all questions are loaded
+    if (currentQuestion >= questions.length) {
+        // All questions are loaded, start playing background music
+        playBackgroundMusic();
+    }
+
     currentQuestion++;
 
     if (currentQuestion < questions.length) {
@@ -639,20 +670,24 @@ const questions = [
     }
 }
 
+submitQuizButton.addEventListener('click', () => {
+    // Show the message container
+    messageContainer.style.display = 'block';
 
-            submitQuizButton.addEventListener('click', () => {
-                // Show the message container
-                messageContainer.style.display = 'block';
-              
-              	// Hide the "Submit" button
-  			  submitQuizButton.style.display = 'none';
+    // Hide the "Submit" button
+    submitQuizButton.style.display = 'none';
 
-                // After 3 seconds, hide the message and show the result container
-                setTimeout(() => {
-                    messageContainer.style.display = 'none';
-                    showResult();
-                }, 10000);
-            });
+    // After 3 seconds, hide the message and show the result container
+    setTimeout(() => {
+        messageContainer.style.display = 'none';
+        showResult();
+    }, 10000);
+});
+
+function playBackgroundMusic() {
+    const backgroundMusic = document.getElementById("background-music");
+    backgroundMusic.play();
+}
 
             function showResult() {
                 const quizContainer = document.getElementById("quiz-container");
@@ -667,7 +702,7 @@ const questions = [
                 resultContainer.appendChild(resultText);
 
                 // Check for a perfect score and set the message
-                if (score === questions.length) {
+               if (score === questions.length) {
                     congratulationsText.textContent = "Congratulations!!! Keep It Up! 🤗 🙌 👍 🤝";
                     resultContainer.appendChild(congratulationsText);
                 }
@@ -737,27 +772,9 @@ const questions = [
             }
 
             loadQuestion();
-          // Function to start playing background music
-        function playBackgroundMusic() {
-            const backgroundMusic = document.getElementById("background-music");
-            backgroundMusic.play();
-        }
-
-        // Call the function to play background music when the first question is loaded
-        playBackgroundMusic();
-        </script>
-       <script>
-        const backgroundMusic = document.getElementById("background-music");
-        const resultContainer = document.getElementById("result-container");
-
-        // Pause the background music when the result is displayed
-        function pauseBackgroundMusic() {
-            backgroundMusic.pause();
-        }
-
-        // Call the function to pause background music when the result is displayed
-        resultContainer.addEventListener("click", pauseBackgroundMusic);
-    </script>
+          </script>
+     
+       
     </footer>
   
  
