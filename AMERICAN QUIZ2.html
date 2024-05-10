@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=yes" name="viewport">
     <title>Educational Quiz About America</title>
+ 
     <style>
        body {
       -webkit-user-select: none; /* Disable selection in WebKit/Blink */
@@ -313,20 +314,7 @@ a.custom-button:hover {
 }
 
         </style>
-  <script>
-   // Function to customize media controls
-function customizeMediaControls() {
-    // Get the audio element
-    const audio = document.getElementById("background-music");
-    
-    // Modify the controlsList attribute to disable download and playbackRate controls
-    audio.controlsList = "nodownload nodirection noduration nodisplay-capture";
-}
-
-// Call the function to customize media controls when the document is loaded
-document.addEventListener("DOMContentLoaded", customizeMediaControls);
-</script>
-
+  
 </head>
 <body>
 <div id="audio-container">
@@ -336,12 +324,24 @@ document.addEventListener("DOMContentLoaded", customizeMediaControls);
         </audio>
     </div>
   <script>
-    const backgroundMusic = document.getElementById("background-music");
+    // Get the audio element
+    const audioPlayer = document.getElementById("audioPlayer");
 
-    // Play the background music when the page loads
-    window.addEventListener("load", function() {
-        // backgroundMusic.play();
-    });
+    // Function to customize audio player controls
+    function customizeAudioPlayerControls() {
+        // Hide the download button
+        audioPlayer.controlsList.add("nodownload");
+
+        // Disable playback speed control
+        audioPlayer.playbackRate = 1; // Set playback rate to default (normal speed)
+        audioPlayer.onloadedmetadata = function() {
+            audioPlayer.playbackRate = 1; // Ensure playback rate is set to default when loaded
+            audioPlayer.removeAttribute("controlsList"); // Remove controlsList attribute to enable playback speed control
+        };
+    }
+
+    // Call the function to customize audio player controls
+    customizeAudioPlayerControls();
 </script>
     <header>
         <h1>Quiz 1:</h1>
