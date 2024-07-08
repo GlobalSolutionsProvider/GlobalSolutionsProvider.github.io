@@ -241,7 +241,7 @@ button.option-d {
         /* Add this CSS rule to set the font size for the wrongly answered questions list */
         .wrong-answers-list {
             font-size: 16px; /* Adjust the font size as needed */
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         /* Add styles for feedback indicators */
@@ -623,7 +623,7 @@ function loadQuestion() {
 // Select global audio elements
 const correctSound = document.getElementById("correct-sound");
 const incorrectSound = document.getElementById("incorrect-sound");
-let musicSound = new Audio('http://localhost/Highway Wildflowers - Bird Creek-GEOGRAPHY.mp3' preload="auto"); // Replace 'path/to/music.mp3' with your actual music file path
+let musicSound = new Audio('http://localhost/Highway Wildflowers - Bird Creek-GEOGRAPHY.mp3'); // Replace 'path/to/music.mp3' with your actual music file path
 musicSound.loop = true;
 musicSound.play();          
           
