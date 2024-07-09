@@ -134,6 +134,18 @@ button.option-d {
             overflow-y: auto; /* Enable vertical scrolling */
             margin-bottom: 20px;
         }
+      /* Media queries for different screen sizes */
+@media (max-width: 600px) {
+  #results-container {
+    max-height: 60vh;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  #results-container {
+    max-height: 65vh;
+  }
+}
 
         h2 {
             font-size: 19px;
